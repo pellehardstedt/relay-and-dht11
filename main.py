@@ -1,9 +1,9 @@
-import RPi.GPIO as GPIO
-import dht11
 from flask import Flask, render_template, request, redirect, url_for
 import threading
 import time
 import datetime
+import RPi.GPIO as GPIO
+import dht11
 
 # GPIO setup
 RELAY_PIN = 17
@@ -16,6 +16,9 @@ GPIO.setup(RELAY_PIN, GPIO.OUT)
 dht11_instance = dht11.DHT11(pin=DHT_PIN)
 
 app = Flask(__name__)
+
+# Add map function to Jinja2 environment globals
+app.jinja_env.globals.update(map=map)
 
 # Store active hours in a list
 active_hours = []
