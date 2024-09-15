@@ -15,17 +15,24 @@ previous_temperature = None
 def read_dht11():
     global previous_humidity, previous_temperature
 
-    # Dummy function for reading DHT11 sensor
-    current_humidity, current_temperature = 50, 25
+    # Ensure dht11_instance is defined and initialized
+    try:
+        result = dht11_instance.read()
+        current_humidity, current_temperature = result.humidity, result.temperature
 
-    if is_valid_reading(current_humidity, current_temperature):
-        previous_humidity, previous_temperature = current_humidity, current_temperature
-        return current_humidity, current_temperature
-    else:
-        # Return previous valid readings if current readings are invalid
-        # return previous_humidity, previous_temperature
-        print('Invalid reading detected.')
-        return current_humidity, current_temperature
+        if is_valid_reading(current_humidity, current_temperature):
+            previous_humidity, previous_temperature = current_humidity, current_temperature
+            return current_humidity, current_temperature
+        else:
+            # Log invalid reading to console
+            print('Invalid reading detected.')
+            # Return previous valid readings if current readings are invalid
+            return previous_humidity, previous_temperature
+    except Exception as e:
+        # Handle any exceptions that occur during reading
+        print(f"Error reading DHT11 sensor: {e}")
+        # Return previous valid readings in case of an error
+        return previous_humidity, previous_temperature
 
 def is_valid_reading(current_humidity, current_temperature):
     global previous_humidity, previous_temperature
