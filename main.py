@@ -7,6 +7,7 @@ import dht11
 
 app = Flask(__name__)
 
+GPIO.setmode(GPIO.BCM)
 DHT_PIN = 4
 dht11_instance = dht11.DHT11(pin=DHT_PIN)
 
