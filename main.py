@@ -8,9 +8,39 @@ RELAY_ENABLED = False
 RELAY_PIN = 17
 active_hours = []
 
+# Global variables to store previous readings
+previous_humidity = None
+previous_temperature = None
+
 def read_dht11():
+    global previous_humidity, previous_temperature
+
     # Dummy function for reading DHT11 sensor
-    return 50, 25
+    current_humidity, current_temperature = 50, 25
+
+    if is_valid_reading(current_humidity, current_temperature):
+        previous_humidity, previous_temperature = current_humidity, current_temperature
+        return current_humidity, current_temperature
+    else:
+        # Return previous valid readings if current readings are invalid
+        # return previous_humidity, previous_temperature
+        print('Invalid reading detected.')
+        return current_humidity, current_temperature
+
+def is_valid_reading(current_humidity, current_temperature):
+    global previous_humidity, previous_temperature
+
+    if previous_humidity is None or previous_temperature is None:
+        return True
+
+    # Define thresholds for sudden jumps
+    humidity_threshold = 10
+    temperature_threshold = 5
+
+    if abs(current_humidity - previous_humidity) > humidity_threshold or abs(current_temperature - previous_temperature) > temperature_threshold:
+        return False
+
+    return True
 
 def control_relay(state):
     if RELAY_ENABLED:

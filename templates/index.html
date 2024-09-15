@@ -14,10 +14,10 @@
             <button name="action" value="on">Turn On</button>
             <button name="action" value="off">Turn Off</button>
         </form>
-    {% endif %}
     <form action="/schedule" method="post">
         <input type="text" name="hours" placeholder="Active hours (comma separated)">
         <button type="submit">Set Schedule</button>
     </form>
+    {% endif %}
 </body>
 </html>
