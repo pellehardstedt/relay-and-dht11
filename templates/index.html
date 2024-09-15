@@ -2,21 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Relay and DHT11 Control</title>
+    <title>Relay and DHT11</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h1>Relay and DHT11 Control</h1>
-    <p>Temperature: {{ temperature }} °C</p>
-    <p>Humidity: {{ humidity }} %</p>
-    <p>Relay State: {{ 'ON' if relay_state else 'OFF' }}</p>
-    <form action="/control" method="post">
-        <button type="submit" name="action" value="on">Turn On</button>
-        <button type="submit" name="action" value="off">Turn Off</button>
-    </form>
+    <h1>Temperature: {{ temperature }}°C</h1>
+    <h1>Humidity: {{ humidity }}%</h1>
+    {% if relay_enabled %}
+        <h1>Relay State: {{ 'ON' if relay_state else 'OFF' }}</h1>
+        <form action="/control" method="post">
+            <button name="action" value="on">Turn On</button>
+            <button name="action" value="off">Turn Off</button>
+        </form>
+    {% endif %}
     <form action="/schedule" method="post">
-        <label for="hours">Active Hours (comma-separated):</label>
-        <input type="text" id="hours" name="hours" value="{{ ','.join(map(str, active_hours)) }}">
+        <input type="text" name="hours" placeholder="Active hours (comma separated)">
         <button type="submit">Set Schedule</button>
     </form>
 </body>
