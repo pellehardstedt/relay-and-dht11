@@ -1,7 +1,14 @@
 from flask import Flask, render_template, request, redirect, url_for
 import RPi.GPIO as GPIO
+import threading
+import time
+import datetime
+import dht11
 
 app = Flask(__name__)
+
+DHT_PIN = 4
+dht11_instance = dht11.DHT11(pin=DHT_PIN)
 
 # Configuration option to enable or disable relay functionality
 RELAY_ENABLED = False
