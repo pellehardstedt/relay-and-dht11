@@ -18,9 +18,11 @@ active_hours = []
 previous_humidity = None
 previous_temperature = None
 
+load_dotenv()
+
 # Weather API configuration
 WEATHER_API_URL = "http://api.openweathermap.org/data/2.5/forecast"
-WEATHER_API_KEY = "_API_KEY"  # Replace with your actual API key
+WEATHER_API_KEY = os.getenv("OPEN_WEATHER_API_KEY")  # Load from environment variable
 LATITUDE = 55.53884677466315  # Replace with your actual latitude
 LONGITUDE = 14.215951896226215  # Replace with your actual longitude
 
