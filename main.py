@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 import RPi.GPIO as GPIO
 import threading
 import time
@@ -35,12 +35,12 @@ def read_dht11():
             # Log invalid reading to console
             print('Invalid reading detected.')
             # Return previous valid readings if current readings are invalid
-            return previous_humidity, previous_temperature
+            return None, None
     except Exception as e:
         # Handle any exceptions that occur during reading
         print(f"Error reading DHT11 sensor: {e}")
         # Return previous valid readings in case of an error
-        return previous_humidity, previous_temperature
+        return None, None
 
 def is_valid_reading(current_humidity, current_temperature):
     global previous_humidity, previous_temperature
@@ -83,6 +83,15 @@ def schedule():
     hours = request.form.get('hours')
     active_hours = list(map(int, hours.split(',')))
     return redirect(url_for('index'))
+
+@app.route('/api/temp_hum')
+def api_temperature_humidity():
+    humidity, temperature = read_dht11()
+    if humidity is not None and temperature is not None:
+        return jsonify({'temperature': temperature, 'humidity': humidity})
+    else:
+        return jsonify({'error': 'Invalid reading'}), 500
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
