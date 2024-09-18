@@ -5,7 +5,7 @@ from flask import Flask, render_template, request, redirect, url_for, jsonify
 import RPi.GPIO as GPIO
 from datetime import datetime
 import threading
-import schedule as scheduley
+import as scheduley
 from dotenv import load_dotenv
 import os
 
@@ -58,6 +58,9 @@ def control_relay(state):
 def log_sensor_data():
     humidity, temperature = read_dht11()
     weather_temperature, weather_feels_like, weather_humidity = fetch_weather_data()
+    # print all data to console
+    print("log_sensor_data: ")
+    print(f"Temperature: {temperature}, Humidity: {humidity}, Weather Temperature: {weather_temperature}, Weather Feels Like: {weather_feels_like}, Weather Humidity: {weather_humidity}")
     if humidity is not None and temperature is not None and weather_temperature is not None:
         current_time = datetime.now()
         date = current_time.strftime('%Y-%m-%d')
