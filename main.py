@@ -8,6 +8,7 @@ import threading
 import schedule as scheduley
 from dotenv import load_dotenv
 import os
+import dht11
 
 app = Flask(__name__)
 
@@ -24,6 +25,7 @@ WEATHER_API_KEY = os.getenv("OPEN_WEATHER_API_KEY")  # Load from environment var
 LATITUDE = 55.53884677466315  # Replace with your actual latitude
 LONGITUDE = 14.215951896226215  # Replace with your actual longitude
 
+GPIO.setmode(GPIO.BCM)
 DHT_PIN = 4
 dht11_instance = dht11.DHT11(pin=DHT_PIN)
 
