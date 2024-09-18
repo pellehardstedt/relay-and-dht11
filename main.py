@@ -128,6 +128,4 @@ def api_latest_entries():
     return jsonify(data)
 
 if __name__ == '__main__':
-    # Start the logging thread
-    threading.Thread(target=schedule_logging, daemon=True).start()
     app.run(host='0.0.0.0', port=5000)
