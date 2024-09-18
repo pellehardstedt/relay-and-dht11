@@ -119,13 +119,9 @@ def api_temperature_humidity():
 @app.route('/api/latest_entries', methods=['GET'])
 def api_latest_entries():
     print("api_latest_entries called")  # Debugging statement
-    log_sensor_data()
-    conn = sqlite3.connect('sensor_data.db')
-    c = conn.cursor()
-    c.execute('SELECT * FROM sensor_data ORDER BY timestamp DESC LIMIT 10')
-    data = c.fetchall()
-    conn.close()
-    return jsonify(data)
+    print(log_sensor_data())
+    print(fetch_weather_data)
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
