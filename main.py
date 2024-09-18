@@ -56,6 +56,7 @@ def control_relay(state):
         GPIO.output(RELAY_PIN, GPIO.HIGH if state else GPIO.LOW)
 
 def log_sensor_data():
+    print("log_sensor_data called")  # Debugging statement
     humidity, temperature = read_dht11()
     weather_temperature, weather_feels_like, weather_humidity = fetch_weather_data()
     # print all data to console
@@ -117,6 +118,7 @@ def api_temperature_humidity():
     
 @app.route('/api/latest_entries')
 def api_latest_entries():
+    print("api_latest_entries called")  # Debugging statement
     log_sensor_data()
     conn = sqlite3.connect('sensor_data.db')
     c = conn.cursor()
