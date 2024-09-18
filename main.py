@@ -5,7 +5,7 @@ from flask import Flask, render_template, request, redirect, url_for, jsonify
 import RPi.GPIO as GPIO
 from datetime import datetime
 import threading
-import schedule
+import schedule as scheduley
 from dotenv import load_dotenv
 import os
 
@@ -72,13 +72,13 @@ def log_sensor_data():
         conn.close()
 
 def schedule_logging():
-    schedule.every().hour.at(":00").do(log_sensor_data)
-    schedule.every().hour.at(":15").do(log_sensor_data)
-    schedule.every().hour.at(":30").do(log_sensor_data)
-    schedule.every().hour.at(":45").do(log_sensor_data)
+    scheduley.every().hour.at(":00").do(log_sensor_data)
+    scheduley.every().hour.at(":15").do(log_sensor_data)
+    scheduley.every().hour.at(":30").do(log_sensor_data)
+    scheduley.every().hour.at(":45").do(log_sensor_data)
 
     while True:
-        schedule.run_pending()
+        scheduley.run_pending()
         time.sleep(1)
 
 @app.route('/')
