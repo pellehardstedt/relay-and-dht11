@@ -6,6 +6,7 @@ import RPi.GPIO as GPIO
 from datetime import datetime
 import threading
 import schedule
+from dotenv import load_dotenv
 
 app = Flask(__name__)
 
@@ -109,6 +110,7 @@ def api_temperature_humidity():
         return jsonify({'temperature': temperature, 'humidity': humidity})
     else:
         return jsonify({'error': 'Invalid reading'}), 500
+    
 @app.route('/api/latest_entries')
 def api_latest_entries():
     conn = sqlite3.connect('sensor_data.db')
