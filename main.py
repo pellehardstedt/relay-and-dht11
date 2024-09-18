@@ -14,10 +14,6 @@ RELAY_ENABLED = False
 RELAY_PIN = 17
 active_hours = []
 
-# Global variables to store previous readings
-previous_humidity = None
-previous_temperature = None
-
 load_dotenv()
 
 # Weather API configuration
@@ -27,16 +23,10 @@ LATITUDE = 55.53884677466315  # Replace with your actual latitude
 LONGITUDE = 14.215951896226215  # Replace with your actual longitude
 
 def read_dht11():
-    global previous_humidity, previous_temperature
-
-    # Ensure dht11_instance is defined and initialized
     try:
         result = dht11_instance.read()
-        current_humidity, current_temperature = result.humidity, result.temperature
-
-        # Update previous readings
-        previous_humidity, previous_temperature = current_humidity, current_temperature
-        return current_humidity, current_temperature
+        humidity, temperature = result.humidity, result.temperature
+        return humidity, temperature
     except Exception as e:
         # Handle any exceptions that occur during reading
         print(f"Error reading DHT11 sensor: {e}")
@@ -119,6 +109,14 @@ def api_temperature_humidity():
         return jsonify({'temperature': temperature, 'humidity': humidity})
     else:
         return jsonify({'error': 'Invalid reading'}), 500
+@app.route('/api/latest_entries')
+def api_latest_entries():
+    conn = sqlite3.connect('sensor_data.db')
+    c = conn.cursor()
+    c.execute('SELECT * FROM sensor_data ORDER BY timestamp DESC LIMIT 10')
+    data = c.fetchall()
+    conn.close()
+    return jsonify(data)
 
 if __name__ == '__main__':
     # Start the logging thread
