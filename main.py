@@ -24,6 +24,9 @@ WEATHER_API_KEY = os.getenv("OPEN_WEATHER_API_KEY")  # Load from environment var
 LATITUDE = 55.53884677466315  # Replace with your actual latitude
 LONGITUDE = 14.215951896226215  # Replace with your actual longitude
 
+DHT_PIN = 4
+dht11_instance = dht11.DHT11(pin=DHT_PIN)
+
 def read_dht11():
     try:
         result = dht11_instance.read()
@@ -119,8 +122,18 @@ def api_temperature_humidity():
 @app.route('/api/latest_entries', methods=['GET'])
 def api_latest_entries():
     print("api_latest_entries called")  # Debugging statement
-    print(log_sensor_data())
-    print(fetch_weather_data)
+    print(read_dht11())
+    print(fetch_weather_data())
+    try:
+        conn = sqlite3.connect('sensor_data.db')
+        c = conn.cursor()
+        c.execute('SELECT * FROM sensor_data ORDER BY timestamp DESC LIMIT 10')
+        data = c.fetchall()
+        conn.close()
+        return jsonify(data)
+    except Exception as e:
+        print(f"Error fetching latest entries: {e}")
+        return jsonify({'error': 'Failed to fetch latest entries'}), 500
 
 
 if __name__ == '__main__':
