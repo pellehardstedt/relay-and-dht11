@@ -116,7 +116,7 @@ def api_temperature_humidity():
     else:
         return jsonify({'error': 'Invalid reading'}), 500
     
-@app.route('/api/latest_entries')
+@app.route('/api/latest_entries', methods=['GET'])
 def api_latest_entries():
     print("api_latest_entries called")  # Debugging statement
     log_sensor_data()
