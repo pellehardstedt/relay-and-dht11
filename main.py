@@ -117,6 +117,7 @@ def api_temperature_humidity():
     
 @app.route('/api/latest_entries')
 def api_latest_entries():
+    log_sensor_data()
     conn = sqlite3.connect('sensor_data.db')
     c = conn.cursor()
     c.execute('SELECT * FROM sensor_data ORDER BY timestamp DESC LIMIT 10')
