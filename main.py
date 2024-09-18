@@ -5,7 +5,7 @@ from flask import Flask, render_template, request, redirect, url_for, jsonify
 import RPi.GPIO as GPIO
 from datetime import datetime
 import threading
-import as scheduley
+import schedule as scheduley
 from dotenv import load_dotenv
 import os
 
